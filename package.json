@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "new-day": "node scripts/start-new-day.js",
-    "part-one-solved": "node scripts/part1-solved.js",
+    "part-one-solved": "node scripts/part1-solved.js && git add . && git commit -m \"Part 1 Solved\"",
     "solved": "git add . && git commit -m \"$npm_config_message\" && git push origin head"
   },
   "repository": {
