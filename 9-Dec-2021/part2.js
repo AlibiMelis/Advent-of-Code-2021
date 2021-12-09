@@ -22,7 +22,20 @@ const evaluate = (grid, i, j, visited) => {
 
 	// console.log('evaluating', i, j, grid[i][j], 'is low');
 
-	return +grid[i][j] + 1;
+	return [i, j];
+}
+
+const dfs = (grid, i, j, visited) => {
+	if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || visited[i][j] || +grid[i][j] === 9) return 0;
+
+	visited[i][j] = true;
+	let deep = 1;
+	deep += dfs(grid, i - 1, j, visited);
+	deep += dfs(grid, i, j - 1, visited);
+	deep += dfs(grid, i + 1, j, visited);
+	deep += dfs(grid, i, j + 1, visited);
+
+	return deep;
 }
 
 const solve = strInput => {
@@ -30,6 +43,7 @@ const solve = strInput => {
 	// Write the solution here.
 	
 	let grid = strInput.split('\n');
+	let points = new Array();
 
 	let visited = new Array(grid.length);
 	for (let i = 0; i < visited.length; i++) visited[i] = new Array(grid[0].length).fill(false);
@@ -37,9 +51,20 @@ const solve = strInput => {
 	for (let i = 0; i < grid.length; i++) {
 		for (let j = 0; j < grid[i].length; j++) {
 			// console.log(visited);
-			result += evaluate(grid, i, j, visited);
+			let point = evaluate(grid, i, j, visited);
+			if (point !== 0) points.push(point);
 		}
 	}
+	let deeps = [];
+
+	points.forEach(point => {
+		let visit = new Array(grid.length);
+		for (let i = 0; i < visit.length; i++) visit[i] = new Array(grid[0].length).fill(false);
+		deeps.push(dfs(grid, point[0], point[1], visit));
+	})
+
+	deeps = deeps.sort((a, b) => b - a);
+	result = deeps[0] * deeps[1] * deeps[2];
 
 	return result;
 }
