@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-let getScore = (bracket) => {
+const getScore = (bracket) => {
 	switch (bracket) {
 		case ')': return 3;
 		case ']': return 57;
@@ -10,7 +10,7 @@ let getScore = (bracket) => {
 	}
 }
 
-let matches = (b1, b2) => {
+const matches = (b1, b2) => {
 	if (b1 === '(' && b2 === ')') return true;
 	if (b1 === '[' && b2 === ']') return true;
 	if (b1 === '{' && b2 === '}') return true;
@@ -18,8 +18,18 @@ let matches = (b1, b2) => {
 	return false;
 }
 
+const getCompletingScore = bracket => {
+	switch (bracket) {
+		case '(': return 1;
+		case '[': return 2;
+		case '{': return 3;
+		case '<': return 4;
+		default: return 0;
+	}
+}
+
 const solve = strInput => {
-	let result = 0;
+	let result = [];
 	// Write the solution here.
 	
 	let lines = strInput.split('\n');
@@ -35,15 +45,18 @@ const solve = strInput => {
 			} else {
 				let prev = stack.pop();;
 				if (!matches(prev, line[i])) {
-					result += getScore(line[i]);
-
 					break;
 				}
 			}
 		}
+		let localScore = 0;
+		while (stack.length > 0) {
+			localScore = localScore * 5 + getCompletingScore(stack.pop());
+		}
+		result.push(localScore);
 	})
 
-	return result;
+	return result.sort()[result.length / 2];
 }
 
 const data = fs.readFileSync('input.txt').toString();
