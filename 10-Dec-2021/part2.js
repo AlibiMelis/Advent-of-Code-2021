@@ -39,24 +39,30 @@ const solve = strInput => {
 
 	lines.forEach(line => {
 		stack = [];
+		let corrupted = false;
 		for (let i = 0; i < line.length; i++) {
 			if (opening.includes(line[i])) {
 				stack.push(line[i]);
 			} else {
 				let prev = stack.pop();;
 				if (!matches(prev, line[i])) {
+					corrupted = true;
 					break;
 				}
 			}
 		}
-		let localScore = 0;
-		while (stack.length > 0) {
-			localScore = localScore * 5 + getCompletingScore(stack.pop());
+		if (!corrupted) {
+			let localScore = 0;
+			while (stack.length > 0) {
+				localScore = localScore * 5 + getCompletingScore(stack.pop());
+			}
+			result.push(localScore);
 		}
-		result.push(localScore);
 	})
 
-	return result.sort()[result.length / 2];
+	result = result.sort((a, b) => a - b);
+
+	return result[(result.length - 1) / 2];
 }
 
 const data = fs.readFileSync('input.txt').toString();
