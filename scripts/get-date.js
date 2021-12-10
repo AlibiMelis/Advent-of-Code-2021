@@ -1,7 +1,7 @@
 const getDatePath = () => {
 	const monthNames = "JanFebMarAprMayJunJulAugSepOctNovDec";
 	const today = new Date();
-	const day = today.getDate();
+	const day = today.getDate().padStart(2, '0');
 	const month = monthNames.slice(today.getMonth() * 3, today.getMonth() * 3 + 3);
 	const year = today.getFullYear();
 
