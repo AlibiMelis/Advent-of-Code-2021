@@ -10,7 +10,6 @@ const connect = (map, e1, e2) => {
 const findPath = (map, vertex, visited) => {
 	if (vertex === vertex.toLowerCase() && visited.has(vertex)) return 0;
 	if (vertex === 'end') return 1;
-	// console.log('iteration')
 
 	let pathCount = 0;
 	visited.add(vertex);
