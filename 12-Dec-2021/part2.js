@@ -3,8 +3,10 @@ const fs = require('fs');
 const connect = (map, e1, e2) => {
 	if (!map[e1]) map[e1] = new Array();
 	map[e1].push(e2);
-	if (!map[e2]) map[e2] = new Array();
-	map[e2].push(e1);
+	if (e1 !== 'start') {
+		if (!map[e2]) map[e2] = new Array();
+		map[e2].push(e1);
+	}
 }
 
 const findPath = (map, vertex, visited) => {
