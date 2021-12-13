@@ -75,10 +75,30 @@ const solve = strInput => {
 		return {axis: fold[0], value: +fold[1]};
 	});
 
-	pointsCount -= doFold(map, folds[0]);
+	for (let i = 0; i < folds.length; i++) {
+		pointsCount -= doFold(map, folds[i]);
+	}
+	visualise(map);
 
 	result = pointsCount;
 	return result;
+}
+
+const visualise = map => {
+	for (let j = 0; j < 6; j++) {
+		for (let i = 0; i < 40; i++) {
+			if (map[i]) {
+				if (map[i].has(j)) {
+					process.stdout.write('#');
+				} else {
+					process.stdout.write(' ');
+				}
+			} else {
+				process.stdout.write(' ');
+			}
+		}
+		process.stdout.write('\n');
+	}
 }
 
 const data = fs.readFileSync('input.txt').toString();
