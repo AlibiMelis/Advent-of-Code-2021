@@ -11,6 +11,7 @@ I used JavaScript (Node.js) to solve the puzzles of this event. I also created a
 	- Creates a new folder taking today's date in a format of dd-Mmm-yyyy as a name.
 	- Creates a new template .js file with all initially needed code in a corresponding folder and names it 'part1.js'.
 	- Creates an 'input.txt' file for given input.
+	- Opens the root folder in Sublime Text.
 - npm run part-one-solved:
 	- The solution of Part 2 is closely related to the solution of Part 1. It is rather an enhancement of Part 1. In order to have both of the solution, without still having to copy-paste the code, this script copies the Part 1 solution into a new file calling it 'part2.js'.
 	- Commits the solution of Part 1 with a message 'Part 1 Solved'.
