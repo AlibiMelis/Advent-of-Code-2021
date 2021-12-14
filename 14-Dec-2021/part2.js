@@ -1,5 +1,16 @@
 const fs = require('fs');
 
+const makeStep = (freqs, map) => {
+	let result = {};
+	for (const pair in map) result[pair] = 0;
+	for (const pair in freqs) {
+		let newPairs = map[pair];
+		result[newPairs[0]] += freqs[pair];
+		result[newPairs[1]] += freqs[pair];
+	}
+	return result;
+}
+
 const solve = strInput => {
 	let result = 0;
 	// Write the solution here.
@@ -10,35 +21,40 @@ const solve = strInput => {
 
 	input[1].split('\n').forEach(ins => {
 		let insertion = ins.split(' -> ');
-		map[insertion[0]] = insertion[1];
+		map[insertion[0]] = [insertion[0][0] + insertion[1], insertion[1] + insertion[0][1]];
 	})
 
-	const steps = 10;
+	let freqs = new Map();
+	const steps = 40;
+
+	for (const pair in map) freqs[pair] = 0;
+
+	for (let i = 0; i < chain.length - 1; i++) {
+		pair = chain.slice(i, i + 2);
+		freqs[pair] += 1;
+	}
 
 	for (let step = 0; step < steps; step++) {
-		let i = 0;
-		let pair = '';
-		while (i < chain.length - 1) {
-			pair = chain.slice(i, i + 2);
-			if (map[pair]) {
-				chain = chain.slice(0, i + 1) + map[pair] + chain.slice(i + 1);
-				i += 1;
-			}
-			i += 1;
-		}
+		freqs = makeStep(freqs, map);
 	}
 
-	let max = 0, min = +Infinity;
-	let freqs = new Map();
-	for (let i = 0; i < chain.length; i++) {
-		if (!freqs[chain[i]]) freqs[chain[i]] = 0;
-		freqs[chain[i]] += 1;
-		max = Math.max(freqs[chain[i]], max);
+	let count = new Map();
+	count[chain[0]] = 1;
+
+	for (const pair in freqs) {
+		if (!count[pair[1]]) count[pair[1]] = 0;
+		count[pair[1]] += freqs[pair];
 	}
-	for (const element in freqs) {
-		min = Math.min(freqs[element], min);
+
+	let maxMin = [0, +Infinity];
+
+	for (const el in count) {
+		let num = count[el];
+		maxMin[0] = Math.max(num, maxMin[0]);
+		maxMin[1] = Math.min(num, maxMin[1]);
 	}
-	result = max - min;
+
+	result = maxMin[0] - maxMin[1];
 
 	return result;
 }
